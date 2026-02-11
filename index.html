@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bramayugam MC - Mystical Survival Server</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="https://iili.io/fyyJnLB.png">
+    <meta name="description" content="Join Bramayugam MC, a mystical survival Minecraft server with custom quests, economy, and a friendly community.">
+</head>
+<body>
+
+    <!-- Navigation -->
+    <header class="navbar">
+        <div class="container nav-container">
+            <a href="#" class="logo">
+                <img src="https://iili.io/fyyJnLB.png" alt="Bramayugam MC Logo" class="logo-img">
+                <span>BRAMAYUGAM MC</span>
+            </a>
+            <nav class="nav-menu" id="nav-menu">
+                <ul>
+                    <li><a href="#home" class="nav-link">Home</a></li>
+                    <li><a href="#about" class="nav-link">About</a></li>
+                    <li><a href="#features" class="nav-link">Features</a></li>
+                    <li><a href="#status" class="nav-link">Status</a></li>
+                    <li><a href="#how-to-join" class="nav-link">Join</a></li>
+                    <li><a href="#discord" class="nav-link discord-link">Discord</a></li>
+                </ul>
+            </nav>
+            <div class="hamburger" id="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero parallax">
+        <div class="hero-overlay"></div>
+        <div class="container hero-content fade-in-up">
+            <img src="https://iili.io/fyyJnLB.png" alt="Bramayugam Logo" class="hero-logo">
+            <h1>Enter <span class="text-gold">Bramayugam</span> MC</h1>
+            <p class="subtitle">A Mystical Survival Experience Awaits You</p>
+            <div class="hero-buttons">
+                <button class="btn btn-primary" onclick="copyIp()" id="copy-btn">
+                    <span class="btn-text">Copy IP: paid1.cherrynodes.site:25574</span>
+                    <span class="btn-icon">📋</span>
+                </button>
+                <a href="#how-to-join" class="btn btn-secondary">How To Play</a>
+            </div>
+            <div class="server-status-mini" id="hero-status">
+                <span class="status-dot loading"></span>
+                <span class="status-text">Checking server...</span>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section about-section">
+        <div class="container">
+            <div class="section-header fade-in">
+                <h2>The Legend Begins</h2>
+                <div class="divider"></div>
+            </div>
+            <div class="about-content fade-in">
+                <p>Welcome to <strong>Bramayugam MC</strong>, where ancient myths meet modern Minecraft survival. Dive into a world carefully crafted for explorers, builders, and warriors alike.</p>
+                <p>Our server offers a unique blend of classic survival mechanics enhanced with magical artifacts, custom economies, and a community that feels like family. Whether you seek to build a majestic empire or conquer deep dungeons, your saga starts here.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="section features-section">
+        <div class="container">
+            <div class="section-header fade-in">
+                <h2>Server Features</h2>
+                <div class="divider"></div>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card fade-in-up">
+                    <div class="feature-icon">⚔️</div>
+                    <h3>Custom Survival</h3>
+                    <p>Experience survival like never before with custom mobs, loot tables, and difficulty scaling.</p>
+                </div>
+                <div class="feature-card fade-in-up" style="animation-delay: 0.1s;">
+                    <div class="feature-icon">🎉</div>
+                    <h3>Weekly Events</h3>
+                    <p>Participate in parkour, PvP tournaments, and scavenger hunts for legendary rewards.</p>
+                </div>
+                <div class="feature-card fade-in-up" style="animation-delay: 0.2s;">
+                    <div class="feature-icon">💰</div>
+                    <h3>Player Economy</h3>
+                    <p>Trade with players, set up shops, and become the wealthiest tycoon in the lands.</p>
+                </div>
+                <div class="feature-card fade-in-up" style="animation-delay: 0.3s;">
+                    <div class="feature-icon">📜</div>
+                    <h3>Epic Quests</h3>
+                    <p>Embark on narrative-driven quests that reveal the lore of Bramayugam.</p>
+                </div>
+                <div class="feature-card fade-in-up" style="animation-delay: 0.4s;">
+                    <div class="feature-icon">🤝</div>
+                    <h3>Friendly Community</h3>
+                    <p>Join a non-toxic environment with active staff ready to help you on your journey.</p>
+                </div>
+                <div class="feature-card fade-in-up" style="animation-delay: 0.5s;">
+                    <div class="feature-icon">🌍</div>
+                    <h3>Unique Worlds</h3>
+                    <p>Explore custom biomes and dimension overhauls that will take your breath away.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Server Status Section -->
+    <section id="status" class="section status-section parallax-bg">
+        <div class="overlay"></div>
+        <div class="container relative-z">
+            <div class="section-header fade-in">
+                <h2>Live Status</h2>
+                <div class="divider"></div>
+            </div>
+            <div class="status-box fade-in-up">
+                <div class="status-info">
+                    <h3>Bramayugam MC</h3>
+                    <p class="server-ip">paid1.cherrynodes.site:25574</p>
+                </div>
+                <div class="status-details">
+                    <div class="status-indicator">
+                        <span class="pulse-dot" id="status-dot-main"></span>
+                        <span id="server-online-text">Loading...</span>
+                    </div>
+                    <div class="player-count">
+                        <span class="count-number" id="player-count">0</span>
+                        <span class="count-label">Players Online</span>
+                    </div>
+                    <div class="version-info" id="version-info">
+                        Version: 1.20+
+                    </div>
+                </div>
+                <div class="player-list" id="player-list-container">
+                    <!-- Player heads will be injected here via JS -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How to Join -->
+    <section id="how-to-join" class="section join-section">
+        <div class="container">
+            <div class="section-header fade-in">
+                <h2>How To Join</h2>
+                <div class="divider"></div>
+            </div>
+            <div class="steps-container">
+                <div class="step-card fade-in-left">
+                    <div class="step-number">01</div>
+                    <div class="step-content">
+                        <h3>Launch Minecraft</h3>
+                        <p>Open your Minecraft Java Edition launcher and start the game (Version 1.20+ recommended).</p>
+                    </div>
+                </div>
+                <div class="step-card fade-in-right">
+                    <div class="step-number">02</div>
+                    <div class="step-content">
+                        <h3>Multiplayer</h3>
+                        <p>Click on the "Multiplayer" button from the main menu.</p>
+                    </div>
+                </div>
+                <div class="step-card fade-in-left">
+                    <div class="step-number">03</div>
+                    <div class="step-content">
+                        <h3>Add Server</h3>
+                        <p>Click "Add Server" and enter the name "Bramayugam MC".</p>
+                    </div>
+                </div>
+                <div class="step-card fade-in-right">
+                    <div class="step-number">04</div>
+                    <div class="step-content">
+                        <h3>Enter IP</h3>
+                        <p>In the Server Address field, paste: <span class="highlight-ip">paid1.cherrynodes.site:25574</span></p>
+                    </div>
+                </div>
+                <div class="step-card fade-in-left">
+                    <div class="step-number">05</div>
+                    <div class="step-content">
+                        <h3>Connect</h3>
+                        <p>Click "Done", select the server from your list, and click "Join Server". Welcome home!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Rules Section -->
+    <section id="rules" class="section rules-section">
+        <div class="container">
+            <div class="section-header fade-in">
+                <h2>Server Rules</h2>
+                <div class="divider"></div>
+            </div>
+            <div class="rules-grid">
+                <div class="rule-card fade-in-up">
+                    <span class="rule-icon">🚫</span>
+                    <h3>No Griefing</h3>
+                    <p>Respect others' builds. Griefing or stealing is strictly prohibited.</p>
+                </div>
+                <div class="rule-card fade-in-up">
+                    <span class="rule-icon">🤖</span>
+                    <h3>No Cheating</h3>
+                    <p>Hacked clients, x-ray, and unfair modifications are not allowed.</p>
+                </div>
+                <div class="rule-card fade-in-up">
+                    <span class="rule-icon">💬</span>
+                    <h3>Be Respectful</h3>
+                    <p>No hate speech, harassment, or toxic behavior in chat.</p>
+                </div>
+                <div class="rule-card fade-in-up">
+                    <span class="rule-icon">⚖️</span>
+                    <h3>Staff Decisions</h3>
+                    <p>Staff decisions are final. Please follow their instructions.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Discord CTA -->
+    <section id="discord" class="section discord-section">
+        <div class="container discord-content fade-in-up">
+            <h2>Join Our Community</h2>
+            <p>Stay updated, chat with other players, and get support on our Discord server.</p>
+            <a href="#" class="btn btn-discord">
+                <span class="discord-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.419-2.1568 2.419zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.419-2.1568 2.419z"/>
+                    </svg>
+                </span>
+                Join Discord
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-container">
+            <div class="footer-col">
+                <div class="footer-logo">
+                    <img src="https://iili.io/fyyJnLB.png" alt="Logo">
+                    <h3>BRAMAYUGAM MC</h3>
+                </div>
+                <p>The ultimate mystical survival experience.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#status">Status</a></li>
+                    <li><a href="#how-to-join">How to Join</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Store</a></li>
+                    <li><a href="#">Vote</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 Bramayugam MC. Not affiliated with Mojang AB.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
