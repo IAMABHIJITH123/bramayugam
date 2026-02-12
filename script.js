@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             const targetId = this.getAttribute('href');
             if (targetId === '#') return;
-            
+
             const targetElement = document.querySelector(targetId);
             if (targetElement) {
                 const navHeight = document.querySelector('.navbar').offsetHeight;
@@ -58,15 +58,86 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Parallax Effect on Scroll ---
     window.addEventListener('scroll', () => {
         const scrolled = window.scrollY;
-        const hero = document.querySelector('.hero');
         const heroContent = document.querySelector('.hero-content');
-        
+
         // Simple parallax for hero content
         if (scrolled < window.innerHeight) {
             heroContent.style.transform = `translateY(${scrolled * 0.4}px)`;
             heroContent.style.opacity = 1 - (scrolled / 700);
         }
     });
+
+    // --- Pixel Snow Effect (Canvas) ---
+    function initPixelSnow() {
+        const canvas = document.getElementById('pixel-snow-canvas');
+        if (!canvas) return;
+
+        const ctx = canvas.getContext('2d');
+        let width = canvas.width = canvas.parentElement.offsetWidth;
+        let height = canvas.height = canvas.parentElement.offsetHeight;
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = canvas.parentElement.offsetWidth;
+            height = canvas.height = canvas.parentElement.offsetHeight;
+        });
+
+        const particles = [];
+        const particleCount = 100; // Adjust for density
+
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * -height; // Start above screen
+                this.speed = Math.random() * 1 + 0.2; // Fall speed (slower)
+                this.size = Math.floor(Math.random() * 3) + 2; // Size 2-4px
+                this.drift = (Math.random() - 0.5) * 0.3; // Horizontal drift (gentler)
+                this.opacity = Math.random() * 0.5 + 0.3;
+            }
+
+            update() {
+                this.y += this.speed;
+                this.x += this.drift;
+
+                // Reset if out of bounds
+                if (this.y > height) {
+                    this.reset();
+                }
+
+                // Wrap around horizontally
+                if (this.x > width) this.x = 0;
+                if (this.x < 0) this.x = width;
+            }
+
+            draw() {
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+                ctx.fillRect(Math.floor(this.x), Math.floor(this.y), this.size, this.size); // Draw square
+            }
+        }
+
+        // Initialize particles
+        for (let i = 0; i < particleCount; i++) {
+            const p = new Particle();
+            p.y = Math.random() * height; // Distribute initially
+            particles.push(p);
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+    }
+
+    initPixelSnow();
 
     // --- Server Status API ---
     const serverIp = 'paid1.cherrynodes.site:25574';
@@ -90,7 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 statusText.innerText = 'Online';
                 statusText.style.color = '#4cd137';
                 playerCount.innerText = data.players.online;
-                
+
                 // Update Hero Mini Status
                 if (heroStatus) {
                     heroStatus.querySelector('.status-dot').className = 'status-dot online';
@@ -133,7 +204,7 @@ document.addEventListener('DOMContentLoaded', () => {
         statusText.innerText = 'Offline';
         statusText.style.color = '#e84118';
         playerCount.innerText = '0';
-        
+
         if (heroStatus) {
             heroStatus.querySelector('.status-dot').className = 'status-dot offline';
             heroStatus.querySelector('.status-text').innerText = 'Server Offline';
@@ -170,11 +241,11 @@ function copyIp() {
     const ip = 'paid1.cherrynodes.site:25574';
     const btn = document.getElementById('copy-btn');
     const originalText = btn.innerHTML;
-    
+
     navigator.clipboard.writeText(ip).then(() => {
         btn.innerHTML = '<span class="btn-text">IP Copied!</span> <span class="btn-icon">✅</span>';
         btn.style.borderColor = '#4cd137';
-        
+
         setTimeout(() => {
             btn.innerHTML = originalText;
             btn.style.borderColor = '';
