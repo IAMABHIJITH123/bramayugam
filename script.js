@@ -65,6 +65,14 @@ document.addEventListener('DOMContentLoaded', () => {
             heroContent.style.transform = `translateY(${scrolled * 0.4}px)`;
             heroContent.style.opacity = 1 - (scrolled / 700);
         }
+
+        // --- Background Blur Effect ---
+        const bg = document.getElementById('page-background');
+        if (bg) {
+            // max blur of 10px, reached after scrolling 500px
+            const blurAmount = Math.min(scrolled / 50, 10);
+            bg.style.filter = `blur(${blurAmount}px)`;
+        }
     });
 
     // --- Pixel Snow Effect (Canvas) ---
@@ -237,31 +245,46 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // --- Copy IP Function ---
-function copyIp() {
-    const ip = 'paid1.cherrynodes.site:25574';
-    const btn = document.getElementById('copy-btn');
-    const originalText = btn.innerHTML;
+// --- Copy IP Function ---
+function copyIp(text, btnId, port = null) {
+    const btn = document.getElementById(btnId);
+    if (!btn) return;
 
-    navigator.clipboard.writeText(ip).then(() => {
-        btn.innerHTML = '<span class="btn-text">IP Copied!</span> <span class="btn-icon">✅</span>';
+    // Copy text to clipboard (if port needed, append it, strictly speaking bedrock IP copy usually just needs IP if port is default, but here we can just copy the text provided)
+    // Actually, usually users want to copy 'IP' or 'IP:Port'.
+    // If it's bedrock, we usually just copy the IP, and users enter the port separately, OR we copy IP:Port.
+    // Let's copy exactly what is passed in `text`. If the user has a port, they might want to copy that separately?
+    // Current common practice: Copy the address string.
+
+    // Construct the string to copy.
+    // If it's a bedrock server with a non-default port, sometimes people want "ip:port".
+    // Let's assume `text` is what should be copied.
+
+    const contentToCopy = text + (port ? ':' + port : '');
+
+    const originalContent = btn.innerHTML;
+    const copyIconProfile = btn.querySelector('.copy-icon');
+
+    navigator.clipboard.writeText(contentToCopy).then(() => {
+        if (copyIconProfile) copyIconProfile.innerHTML = '<i class="fa-solid fa-check"></i>';
         btn.style.borderColor = '#4cd137';
 
         setTimeout(() => {
-            btn.innerHTML = originalText;
+            if (copyIconProfile) copyIconProfile.innerHTML = '<i class="fa-regular fa-copy"></i>';
             btn.style.borderColor = '';
         }, 2000);
     }).catch(err => {
         console.error('Could not copy text: ', err);
-        // Fallback for older browsers
+        // Fallback
         const textArea = document.createElement("textarea");
-        textArea.value = ip;
+        textArea.value = contentToCopy;
         document.body.appendChild(textArea);
         textArea.select();
         try {
             document.execCommand('copy');
-            btn.innerHTML = '<span class="btn-text">IP Copied!</span> <span class="btn-icon">✅</span>';
+            if (copyIconProfile) copyIconProfile.innerHTML = '<i class="fa-solid fa-check"></i>';
             setTimeout(() => {
-                btn.innerHTML = originalText;
+                if (copyIconProfile) copyIconProfile.innerHTML = '<i class="fa-regular fa-copy"></i>';
             }, 2000);
         } catch (err) {
             console.error('Fallback: Oops, unable to copy', err);

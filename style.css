@@ -95,6 +95,55 @@ ul {
     overflow: hidden;
 }
 
+.rounded-btn {
+    border-radius: 50px;
+    padding: 10px 30px;
+}
+
+.server-connect-container {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    padding: 20px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+.ip-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 0 15px;
+    text-align: left;
+}
+
+.btn-label {
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.7);
+    letter-spacing: 0.5px;
+}
+
+.btn-text {
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.btn-subtext {
+    font-size: 0.8rem;
+    color: var(--accent);
+}
+
+.btn-icon,
+.copy-icon {
+    font-size: 1.2rem;
+}
+
 .btn-primary {
     background: var(--primary);
     color: #fff;
@@ -109,13 +158,13 @@ ul {
 }
 
 .btn-secondary {
-    background: transparent;
-    border: 2px solid var(--text-main);
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     color: var(--text-main);
 }
 
 .btn-secondary:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.2);
     border-color: #fff;
     color: #fff;
     transform: translateY(-3px);
@@ -142,25 +191,33 @@ ul {
     align-items: center;
 }
 
-/* Navbar */
+/* Navbar - Glassmorphism Dock Style */
 .navbar {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: var(--nav-height);
-    background: rgba(10, 11, 20, 0.95);
+    top: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: fit-content;
+    max-width: 90%;
+    height: auto;
+    min-height: var(--nav-height);
+    background: rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     z-index: 1000;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 30px;
+    box-shadow: 0 6px 6px rgba(0, 0, 0, 0.5);
     transition: all 0.3s ease;
+    padding: 0 20px;
 }
 
 .nav-container {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     height: 100%;
+    gap: 50px;
 }
 
 .logo {
@@ -185,9 +242,13 @@ ul {
 .nav-link {
     font-size: 0.95rem;
     font-weight: 500;
-    color: var(--text-muted);
+    color: #ffd700;
+    /* Gold/Yellow from source/theme */
     position: relative;
     padding: 5px 0;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 }
 
 .nav-link:hover,
@@ -198,17 +259,18 @@ ul {
 .nav-link::after {
     content: '';
     position: absolute;
-    bottom: 0;
-    left: 0;
     width: 0;
     height: 2px;
-    background: var(--accent);
-    transition: width 0.3s ease;
+    background: white;
+    bottom: 0;
+    left: 50%;
+    transition: all 0.3s ease;
 }
 
 .nav-link:hover::after,
 .nav-link.active::after {
     width: 100%;
+    left: 0;
 }
 
 .discord-link {
@@ -239,8 +301,24 @@ ul {
     justify-content: center;
     text-align: center;
     overflow: hidden;
-    background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+    /* background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%); REMOVED for bg.png */
+    background: transparent;
     color: #fff;
+}
+
+#page-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('bg.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: -1;
+    transition: filter 0.1s ease-out;
+    /* Smooth blur transition */
 }
 
 #pixel-snow-canvas {
@@ -414,8 +492,10 @@ ul {
 
 /* About Section */
 .about-section {
-    background-color: var(--bg-darker);
-    background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTEgMWgydjJIMUMxeiIgZmlsbD0iIzIyMiIgZmlsbC1vcGFjaXR5PSIwLjEiLz48L3N2Zz4=');
+    background-color: rgba(5, 5, 8, 0.85);
+    /* Semi-transparent */
+    /* background-image: ... REMOVED patterned bg */
+    backdrop-filter: blur(5px);
 }
 
 .about-content {
@@ -436,7 +516,9 @@ ul {
 
 /* Features Section */
 .features-section {
-    background-color: var(--bg-dark);
+    background-color: rgba(10, 11, 20, 0.85);
+    /* Semi-transparent */
+    backdrop-filter: blur(5px);
 }
 
 .features-grid {
@@ -496,10 +578,12 @@ ul {
 
 /* Status Section */
 .status-section {
-    background: url('https://www.transparenttextures.com/patterns/cubes.png'), linear-gradient(rgba(10, 11, 20, 0.9), rgba(10, 11, 20, 0.9));
-    background-attachment: fixed;
+    background: rgba(10, 11, 20, 0.85);
+    /* Semi-transparent */
+    /* background: url(...) REMOVED fixed bg */
     border-top: 1px solid rgba(255, 255, 255, 0.05);
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(5px);
 }
 
 .relative-z {
@@ -639,7 +723,9 @@ ul {
 
 /* Join Section */
 .join-section {
-    background-color: var(--bg-darker);
+    background-color: rgba(5, 5, 8, 0.85);
+    /* Semi-transparent */
+    backdrop-filter: blur(5px);
 }
 
 .steps-container {
@@ -741,7 +827,9 @@ ul {
 
 /* Rules Section */
 .rules-section {
-    background-color: var(--bg-dark);
+    background-color: rgba(10, 11, 20, 0.85);
+    /* Semi-transparent */
+    backdrop-filter: blur(5px);
 }
 
 .rules-grid {
@@ -772,7 +860,9 @@ ul {
 .discord-section {
     padding: 80px 0;
     text-align: center;
-    background: linear-gradient(rgba(88, 101, 242, 0.1), rgba(10, 11, 20, 1));
+    background: linear-gradient(rgba(88, 101, 242, 0.1), rgba(10, 11, 20, 0.9));
+    /* Adjusted opacity */
+    backdrop-filter: blur(5px);
 }
 
 .discord-content h2 {
@@ -884,8 +974,24 @@ footer {
         font-size: 2rem;
     }
 
+    /* Reset Navbar to full width on mobile */
+    .navbar {
+        width: 100%;
+        top: 0;
+        left: 0;
+        transform: none;
+        border-radius: 0;
+        border: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
     .hamburger {
         display: block;
+    }
+
+    .nav-container {
+        justify-content: space-between;
+        gap: 0;
     }
 
     .hamburger.active .bar:nth-child(2) {
