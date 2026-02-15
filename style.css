@@ -2,15 +2,15 @@
     --bg-dark: #0a0b14;
     --bg-darker: #050508;
     --primary: #4e31aa;
-    --primary-light: #7c5cdb;
+    --primary-light: #6f42c1;
     --accent: #ffd700;
-    --accent-glow: rgba(255, 215, 0, 0.4);
-    --text-main: #e0e0e0;
+    --accent-glow: rgba(255, 215, 0, 0.3);
+    --text-main: #f0f0f0;
     --text-muted: #a0a0a0;
-    --card-bg: rgba(20, 20, 30, 0.8);
-    --card-border: rgba(78, 49, 170, 0.3);
-    --gradient-hero: linear-gradient(135deg, #1a0b2e 0%, #000000 100%);
-    --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --card-bg: rgba(255, 255, 255, 0.03);
+    --card-border: rgba(255, 255, 255, 0.08);
+    --font-heading: 'Outfit', sans-serif;
+    --font-body: 'Inter', sans-serif;
     --nav-height: 80px;
 }
 
@@ -25,11 +25,12 @@ html {
 }
 
 body {
-    font-family: var(--font-main);
+    font-family: var(--font-body);
     background-color: var(--bg-dark);
     color: var(--text-main);
-    line-height: 1.6;
+    line-height: 1.7;
     overflow-x: hidden;
+    letter-spacing: 0.02em;
 }
 
 /* Typography */
@@ -37,16 +38,24 @@ h1,
 h2,
 h3,
 h4 {
+    font-family: var(--font-heading);
     color: #fff;
     margin-bottom: 1rem;
     font-weight: 700;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
 }
 
 h1 {
-    font-size: 3.5rem;
-    text-transform: uppercase;
-    text-shadow: 0 0 20px rgba(78, 49, 170, 0.8);
+    font-size: 4.5rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    background: linear-gradient(to bottom, #ffffff 0%, #a0a0a0 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 1.5rem;
 }
 
 h2 {
@@ -58,7 +67,27 @@ h2 {
 
 .text-gold {
     color: var(--accent);
-    text-shadow: 0 0 15px var(--accent-glow);
+    background: linear-gradient(to right,
+            #bf953f,
+            #fcf6ba,
+            #b38728,
+            #fbf5b7,
+            #aa771c);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 200% auto;
+    animation: shine 5s linear infinite;
+    text-shadow: none;
+    /* Shadow conflicts with clip */
+    display: inline-block;
+    /* Required for transform/clip sometimes */
+}
+
+@keyframes shine {
+    to {
+        background-position: 200% center;
+    }
 }
 
 a {
@@ -233,11 +262,13 @@ ul {
     font-weight: 700;
     font-size: 1.2rem;
     color: #fff;
+    font-family: var(--font-heading);
+    letter-spacing: 0.1em;
 }
 
 .logo-img {
     height: 40px;
-    margin-right: 10px;
+    margin-right: 15px;
     border-radius: 8px;
 }
 
@@ -339,6 +370,17 @@ ul {
     pointer-events: none;
 }
 
+#cursor-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    /* Top on everything */
+    pointer-events: none;
+}
+
 .hero-overlay {
     position: absolute;
     top: 0;
@@ -357,33 +399,38 @@ ul {
 }
 
 .hero-logo {
-    max-width: 150px;
-    margin-bottom: 20px;
-    animation: float 6s ease-in-out infinite;
-    border-radius: 8px;
+    max-width: 180px;
+    margin-bottom: 30px;
+    animation: float 8s ease-in-out infinite;
+    filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.2));
 }
 
 @keyframes float {
     0% {
-        transform: translateY(0px);
+        transform: translateY(0px) rotate(0deg);
     }
 
     50% {
-        transform: translateY(-20px);
+        transform: translateY(-15px) rotate(2deg);
     }
 
     100% {
-        transform: translateY(0px);
+        transform: translateY(0px) rotate(0deg);
     }
 }
 
 .subtitle {
-    font-size: 1.5rem;
+    font-family: var(--font-body);
+    font-size: 1.2rem;
+    font-weight: 300;
     color: var(--text-muted);
-    margin-bottom: 40px;
-    max-width: 600px;
+    margin-bottom: 50px;
+    max-width: 700px;
     margin-left: auto;
     margin-right: auto;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    opacity: 0.8;
 }
 
 .hero-buttons {
@@ -533,23 +580,30 @@ ul {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 30px;
+    perspective: 1000px;
+    /* Enable 3D space */
 }
 
 .feature-card {
     background: var(--card-bg);
     border: 1px solid var(--card-border);
-    padding: 30px;
-    border-radius: 12px;
+    padding: 40px 30px;
+    border-radius: 16px;
     text-align: center;
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     position: relative;
     overflow: hidden;
+    backdrop-filter: blur(5px);
+    transform-style: preserve-3d;
+    /* vital for 3d effect */
+    will-change: transform;
 }
 
 .feature-card:hover {
     transform: translateY(-10px);
-    border-color: var(--primary-light);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+    background: rgba(255, 255, 255, 0.05);
 }
 
 .feature-card::before {
@@ -568,10 +622,25 @@ ul {
     transform: scaleX(1);
 }
 
+.feature-icon,
+.feature-card h3,
+.feature-card p {
+    transform: translateZ(20px);
+    /* Lift elements off the card */
+}
+
+/* Specific overrides if needed, but the grouping above is cleaner */
 .feature-icon {
-    font-size: 3rem;
-    margin-bottom: 20px;
-    color: var(--primary-light);
+    font-size: 2.5rem;
+    margin-bottom: 25px;
+    color: #fff;
+    opacity: 0.9;
+    transition: transform 0.4s ease;
+}
+
+.feature-card:hover .feature-icon {
+    transform: scale(1.1);
+    color: var(--accent);
 }
 
 .feature-card h3 {
@@ -582,6 +651,70 @@ ul {
 .feature-card p {
     color: var(--text-muted);
     font-size: 0.95rem;
+}
+
+/* Glowing Card Effect */
+.glowing-card {
+    position: relative;
+    z-index: 1;
+    overflow: visible;
+    /* Needed for the glow to spill out */
+}
+
+/* The glow */
+.glowing-card::before {
+    content: "";
+    background: linear-gradient(45deg,
+            #ffd700,
+            #4e31aa,
+            #ffd700);
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    background-size: 400%;
+    z-index: -1;
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    filter: blur(8px);
+    animation: glowing 20s linear infinite;
+    opacity: 0;
+    transition: opacity .3s ease-in-out;
+    border-radius: 16px;
+    /* Match feature-card border-radius */
+}
+
+.glowing-card:hover::before {
+    opacity: 1;
+}
+
+/* The background overlay to keep text readable */
+.glowing-card::after {
+    content: "";
+    z-index: -1;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: var(--card-bg);
+    /* Use variable or specific dark color */
+    left: 0;
+    top: 0;
+    border-radius: 16px;
+    background-color: #0a0b14;
+    /* Ensure opaque background */
+}
+
+@keyframes glowing {
+    0% {
+        background-position: 0 0;
+    }
+
+    50% {
+        background-position: 400% 0;
+    }
+
+    100% {
+        background-position: 0 0;
+    }
 }
 
 /* Status Section */
@@ -600,20 +733,52 @@ ul {
 }
 
 .status-box {
-    background: rgba(10, 10, 15, 0.8);
-    backdrop-filter: blur(10px);
-    border: 1px solid var(--primary);
-    border-radius: 15px;
-    padding: 40px;
-    max-width: 800px;
+    background: rgba(255, 255, 255, 0.05);
+    /* Lighter, more glassy base */
+    backdrop-filter: blur(16px);
+    /* Strong blur */
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    /* Subtle white border */
+    border-radius: 24px;
+    padding: 50px;
+    max-width: 900px;
     margin: 0 auto;
     text-align: center;
-    box-shadow: 0 0 50px rgba(78, 49, 170, 0.2);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    /* Soft shadow */
+    position: relative;
+    overflow: hidden;
+}
+
+/* Status HUD Lines */
+.status-box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    opacity: 0.5;
+}
+
+.status-box::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    opacity: 0.5;
 }
 
 .status-info h3 {
-    font-size: 2rem;
-    margin-bottom: 5px;
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
 }
 
 .server-ip {
@@ -694,10 +859,12 @@ ul {
 
 .count-number {
     display: block;
-    font-size: 2.5rem;
-    font-weight: 700;
+    font-size: 4rem;
+    font-weight: 800;
     color: #fff;
     line-height: 1;
+    text-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+    font-family: var(--font-heading);
 }
 
 .count-label {
@@ -815,13 +982,59 @@ ul {
     }
 }
 
+.step-content {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 25px;
+    border-radius: 12px;
+    width: 100%;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.step-card:hover .step-content {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
 .step-content h3 {
     color: #fff;
     margin-bottom: 5px;
+    font-family: var(--font-heading);
+    letter-spacing: 0.05em;
 }
 
 .step-content p {
     color: var(--text-muted);
+    font-size: 0.95rem;
+}
+
+/* Timeline specific adjustments */
+@media (min-width: 768px) {
+    .step-content::before {
+        content: '';
+        position: absolute;
+        top: 20px;
+        width: 15px;
+        height: 15px;
+        background: var(--bg-dark);
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        border-right: 1px solid rgba(255, 255, 255, 0.1);
+        transform: rotate(45deg);
+    }
+
+    .step-card:nth-child(odd) .step-content::before {
+        right: -8px;
+    }
+
+    .step-card:nth-child(even) .step-content::before {
+        left: -8px;
+        border-top: 0;
+        border-right: 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        border-left: 1px solid rgba(255, 255, 255, 0.1);
+    }
 }
 
 .highlight-ip {
@@ -847,20 +1060,27 @@ ul {
 }
 
 .rule-card {
-    background: rgba(255, 255, 255, 0.03);
-    padding: 25px;
-    border-radius: 8px;
-    border-left: 3px solid var(--primary);
-    transition: background 0.3s;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    padding: 30px;
+    border-radius: 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
 }
 
 .rule-card:hover {
+    transform: translateX(5px);
     background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.2);
 }
 
 .rule-icon {
-    font-size: 2rem;
-    margin-bottom: 10px;
+    font-size: 1.8rem;
+    color: var(--accent);
+    padding-top: 5px;
     display: block;
 }
 
@@ -1039,4 +1259,70 @@ footer {
     .hero-content {
         padding: 0 20px;
     }
+}
+
+/* Rules Section - Added Fix */
+.rules-section {
+    background-color: rgba(10, 11, 20, 0.85);
+    backdrop-filter: blur(5px);
+}
+
+.rules-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    perspective: 1000px;
+}
+
+.rule-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    padding: 30px 25px;
+    border-radius: 16px;
+    text-align: center;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(5px);
+    transform-style: preserve-3d;
+    will-change: transform;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.rule-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.05);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.rule-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    color: var(--accent);
+    margin-bottom: 20px;
+    background: rgba(255, 215, 0, 0.1);
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    transform: translateZ(20px);
+}
+
+.rule-card h3 {
+    margin-bottom: 15px;
+    color: #fff;
+    font-size: 1.3rem;
+    transform: translateZ(15px);
+}
+
+.rule-card p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    transform: translateZ(10px);
 }

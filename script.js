@@ -181,6 +181,22 @@ document.addEventListener('DOMContentLoaded', () => {
                     versionInfo.innerText = `Version: ${data.version.name_clean || data.version.name}`;
                 }
 
+                // Update MOTD
+                const motdContainer = document.getElementById('motd-container');
+                const motdContent = document.getElementById('motd-content');
+
+                console.log("Server Status Data:", data); // Debugging
+
+                if (motdContainer && motdContent) {
+                    if (data.motd && (data.motd.html || data.motd.clean)) {
+                        motdContainer.style.display = 'block';
+                        motdContent.innerHTML = data.motd.html || data.motd.clean.replace(/\n/g, '<br>');
+                    } else {
+                        console.warn("MOTD data missing or empty", data.motd);
+                        motdContainer.style.display = 'none';
+                    }
+                }
+
                 // Player List (Heads)
                 if (playerListContainer && data.players.list && data.players.list.length > 0) {
                     playerListContainer.innerHTML = '';
@@ -242,6 +258,34 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+    // --- 3D Tilt Effect for Cards ---
+    function init3DTilt() {
+        const cards = document.querySelectorAll('.feature-card, .rule-card');
+
+        cards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+
+                // Max rotation: 10 degrees
+                const rotateX = ((y - centerY) / centerY) * -10;
+                const rotateY = ((x - centerX) / centerX) * 10;
+
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.05, 1.05, 1.05)`;
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
+            });
+        });
+    }
+
+    init3DTilt();
+
 });
 
 // --- Copy IP Function ---
