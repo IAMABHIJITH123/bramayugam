@@ -132,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initPixelSnow();
 
     // ====================== SERVER STATUS (UPDATED) ======================
-    const serverIp = 'bramayugam.qzz.io';
+    const serverIp = 'de25.spaceify.eu:25725';
     const apiUrl = `https://api.mcstatus.io/v2/status/java/${serverIp}?query=false`;
 
     const statusDot = document.getElementById('status-dot-main');
