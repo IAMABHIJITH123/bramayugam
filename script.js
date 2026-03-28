@@ -22,13 +22,11 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             const targetId = this.getAttribute('href');
             if (targetId === '#') return;
-
             const targetElement = document.querySelector(targetId);
             if (targetElement) {
                 const navHeight = document.querySelector('.navbar').offsetHeight;
                 const elementPosition = targetElement.getBoundingClientRect().top;
                 const offsetPosition = elementPosition + window.scrollY - navHeight;
-
                 window.scrollTo({
                     top: offsetPosition,
                     behavior: "smooth"
@@ -60,16 +58,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const scrolled = window.scrollY;
         const heroContent = document.querySelector('.hero-content');
 
-        // Simple parallax for hero content
-        if (scrolled < window.innerHeight) {
+        if (heroContent && scrolled < window.innerHeight) {
             heroContent.style.transform = `translateY(${scrolled * 0.4}px)`;
             heroContent.style.opacity = 1 - (scrolled / 700);
         }
 
-        // --- Background Blur Effect ---
+        // Background Blur Effect
         const bg = document.getElementById('page-background');
         if (bg) {
-            // max blur of 10px, reached after scrolling 500px
             const blurAmount = Math.min(scrolled / 50, 10);
             bg.style.filter = `blur(${blurAmount}px)`;
         }
@@ -79,7 +75,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function initPixelSnow() {
         const canvas = document.getElementById('pixel-snow-canvas');
         if (!canvas) return;
-
         const ctx = canvas.getContext('2d');
         let width = canvas.width = canvas.parentElement.offsetWidth;
         let height = canvas.height = canvas.parentElement.offsetHeight;
@@ -90,46 +85,36 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         const particles = [];
-        const particleCount = 100; // Adjust for density
+        const particleCount = 100;
 
         class Particle {
             constructor() {
                 this.reset();
             }
-
             reset() {
                 this.x = Math.random() * width;
-                this.y = Math.random() * -height; // Start above screen
-                this.speed = Math.random() * 1 + 0.2; // Fall speed (slower)
-                this.size = Math.floor(Math.random() * 3) + 2; // Size 2-4px
-                this.drift = (Math.random() - 0.5) * 0.3; // Horizontal drift (gentler)
+                this.y = Math.random() * -height;
+                this.speed = Math.random() * 1 + 0.2;
+                this.size = Math.floor(Math.random() * 3) + 2;
+                this.drift = (Math.random() - 0.5) * 0.3;
                 this.opacity = Math.random() * 0.5 + 0.3;
             }
-
             update() {
                 this.y += this.speed;
                 this.x += this.drift;
-
-                // Reset if out of bounds
-                if (this.y > height) {
-                    this.reset();
-                }
-
-                // Wrap around horizontally
+                if (this.y > height) this.reset();
                 if (this.x > width) this.x = 0;
                 if (this.x < 0) this.x = width;
             }
-
             draw() {
                 ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
-                ctx.fillRect(Math.floor(this.x), Math.floor(this.y), this.size, this.size); // Draw square
+                ctx.fillRect(Math.floor(this.x), Math.floor(this.y), this.size, this.size);
             }
         }
 
-        // Initialize particles
         for (let i = 0; i < particleCount; i++) {
             const p = new Particle();
-            p.y = Math.random() * height; // Distribute initially
+            p.y = Math.random() * height;
             particles.push(p);
         }
 
@@ -141,15 +126,14 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             requestAnimationFrame(animate);
         }
-
         animate();
     }
 
     initPixelSnow();
 
-    // --- Server Status API ---
-    const serverIp = 'de25.spaceify.eu:25725';
-    const apiUrl = `https://api.mcstatus.io/v2/status/java/${serverIp}`;
+    // ====================== SERVER STATUS (UPDATED) ======================
+    const serverIp = 'bramayugam.qzz.io';
+    const apiUrl = `https://api.mcstatus.io/v2/status/java/${serverIp}?query=false`;
 
     const statusDot = document.getElementById('status-dot-main');
     const statusText = document.getElementById('server-online-text');
@@ -161,59 +145,58 @@ document.addEventListener('DOMContentLoaded', () => {
     async function fetchServerStatus() {
         try {
             const response = await fetch(apiUrl);
+            if (!response.ok) throw new Error('Failed to fetch');
+
             const data = await response.json();
 
             if (data.online) {
-                // Update Main Status
+                // Main Status
                 statusDot.className = 'pulse-dot online';
                 statusText.innerText = 'Online';
                 statusText.style.color = '#4cd137';
-                playerCount.innerText = data.players.online;
+                playerCount.innerText = data.players.online || 0;
 
-                // Update Hero Mini Status
+                // Hero Mini Status
                 if (heroStatus) {
                     heroStatus.querySelector('.status-dot').className = 'status-dot online';
-                    heroStatus.querySelector('.status-text').innerText = `${data.players.online} Players Online`;
+                    heroStatus.querySelector('.status-text').innerText = `${data.players.online || 0} Players Online`;
                 }
 
-                // Update Version
-                if (versionInfo) {
-                    versionInfo.innerText = `Version: ${data.version.name_clean || data.version.name}`;
+                // Version
+                if (versionInfo && data.version) {
+                    versionInfo.innerText = `Version: ${data.version.name_clean || data.version.name || 'Unknown'}`;
                 }
 
-                // Update MOTD
+                // MOTD
                 const motdContainer = document.getElementById('motd-container');
                 const motdContent = document.getElementById('motd-content');
-
-                console.log("Server Status Data:", data); // Debugging
-
                 if (motdContainer && motdContent) {
                     if (data.motd && (data.motd.html || data.motd.clean)) {
                         motdContainer.style.display = 'block';
-                        motdContent.innerHTML = data.motd.html || data.motd.clean.replace(/\n/g, '<br>');
+                        let motdHtml = data.motd.html || (data.motd.clean || '').replace(/\n/g, '<br>');
+                        motdContent.innerHTML = motdHtml;
                     } else {
-                        console.warn("MOTD data missing or empty", data.motd);
                         motdContainer.style.display = 'none';
                     }
                 }
 
-                // Player List (Heads)
-                if (playerListContainer && data.players.list && data.players.list.length > 0) {
+                // Player Heads
+                if (playerListContainer) {
                     playerListContainer.innerHTML = '';
-                    data.players.list.forEach(player => {
-                        const img = document.createElement('img');
-                        // Use uuid for head if available, otherwise name
-                        const avatarUrl = `https://mc-heads.net/avatar/${player.uuid || player.name}/40`;
-                        img.src = avatarUrl;
-                        img.alt = player.name_clean || player.name;
-                        img.title = player.name_clean || player.name;
-                        img.className = 'player-head';
-                        playerListContainer.appendChild(img);
-                    });
-                } else {
-                    playerListContainer.innerHTML = '<span style="color:#777; font-size: 0.9rem;">No players visible or list hidden.</span>';
+                    if (data.players.list && data.players.list.length > 0) {
+                        data.players.list.forEach(player => {
+                            const img = document.createElement('img');
+                            const name = player.name_clean || player.name;
+                            img.src = `https://mc-heads.net/avatar/${name}/40`;
+                            img.alt = name;
+                            img.title = name;
+                            img.className = 'player-head';
+                            playerListContainer.appendChild(img);
+                        });
+                    } else {
+                        playerListContainer.innerHTML = '<span style="color:#777; font-size: 0.9rem;">No players visible</span>';
+                    }
                 }
-
             } else {
                 setOffline();
             }
@@ -251,27 +234,25 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        navLinks.forEach(li => {
-            li.classList.remove('active');
-            if (li.getAttribute('href').includes(current)) {
-                li.classList.add('active');
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href').includes(current)) {
+                link.classList.add('active');
             }
         });
     });
+
     // --- 3D Tilt Effect for Cards ---
     function init3DTilt() {
         const cards = document.querySelectorAll('.feature-card, .rule-card');
-
         cards.forEach(card => {
             card.addEventListener('mousemove', (e) => {
                 const rect = card.getBoundingClientRect();
                 const x = e.clientX - rect.left;
                 const y = e.clientY - rect.top;
-
                 const centerX = rect.width / 2;
                 const centerY = rect.height / 2;
 
-                // Max rotation: 10 degrees
                 const rotateX = ((y - centerY) / centerY) * -10;
                 const rotateY = ((x - centerX) / centerX) * 10;
 
@@ -285,54 +266,40 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     init3DTilt();
-
 });
 
-// --- Copy IP Function ---
-// --- Copy IP Function ---
+// ====================== COPY IP FUNCTION ======================
 function copyIp(text, btnId, port = null) {
     const btn = document.getElementById(btnId);
     if (!btn) return;
 
-    // Copy text to clipboard (if port needed, append it, strictly speaking bedrock IP copy usually just needs IP if port is default, but here we can just copy the text provided)
-    // Actually, usually users want to copy 'IP' or 'IP:Port'.
-    // If it's bedrock, we usually just copy the IP, and users enter the port separately, OR we copy IP:Port.
-    // Let's copy exactly what is passed in `text`. If the user has a port, they might want to copy that separately?
-    // Current common practice: Copy the address string.
-
-    // Construct the string to copy.
-    // If it's a bedrock server with a non-default port, sometimes people want "ip:port".
-    // Let's assume `text` is what should be copied.
-
     const contentToCopy = text + (port ? ':' + port : '');
-
-    const originalContent = btn.innerHTML;
-    const copyIconProfile = btn.querySelector('.copy-icon');
+    const originalHTML = btn.innerHTML;
+    const copyIcon = btn.querySelector('.copy-icon');
 
     navigator.clipboard.writeText(contentToCopy).then(() => {
-        if (copyIconProfile) copyIconProfile.innerHTML = '<i class="fa-solid fa-check"></i>';
+        if (copyIcon) copyIcon.innerHTML = '<i class="fa-solid fa-check"></i>';
         btn.style.borderColor = '#4cd137';
 
         setTimeout(() => {
-            if (copyIconProfile) copyIconProfile.innerHTML = '<i class="fa-regular fa-copy"></i>';
+            if (copyIcon) copyIcon.innerHTML = '<i class="fa-regular fa-copy"></i>';
             btn.style.borderColor = '';
         }, 2000);
-    }).catch(err => {
-        console.error('Could not copy text: ', err);
+    }).catch(() => {
         // Fallback
         const textArea = document.createElement("textarea");
         textArea.value = contentToCopy;
         document.body.appendChild(textArea);
         textArea.select();
-        try {
-            document.execCommand('copy');
-            if (copyIconProfile) copyIconProfile.innerHTML = '<i class="fa-solid fa-check"></i>';
-            setTimeout(() => {
-                if (copyIconProfile) copyIconProfile.innerHTML = '<i class="fa-regular fa-copy"></i>';
-            }, 2000);
-        } catch (err) {
-            console.error('Fallback: Oops, unable to copy', err);
-        }
+        document.execCommand('copy');
         document.body.removeChild(textArea);
+
+        if (copyIcon) copyIcon.innerHTML = '<i class="fa-solid fa-check"></i>';
+        btn.style.borderColor = '#4cd137';
+
+        setTimeout(() => {
+            if (copyIcon) copyIcon.innerHTML = '<i class="fa-regular fa-copy"></i>';
+            btn.style.borderColor = '';
+        }, 2000);
     });
 }
