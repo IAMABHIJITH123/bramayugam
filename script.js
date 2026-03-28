@@ -148,7 +148,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initPixelSnow();
 
     // --- Server Status API ---
-    const serverIp = 'paid1.cherrynodes.site:25574';
+    const serverIp = 'bramayugam.qzz.io';
     const apiUrl = `https://api.mcstatus.io/v2/status/java/${serverIp}`;
 
     const statusDot = document.getElementById('status-dot-main');
