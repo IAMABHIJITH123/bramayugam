@@ -133,7 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ====================== SERVER STATUS (UPDATED) ======================
     const serverIp = 'play.bramayugam.bond';
-    const apiUrl = `https://api.mcstatus.io/v2/status/java/${serverIp}?query=false`;
+    const apiUrl = `https://api.mcstatus.io/v2/status/java/${serverIp}?query=true`;
 
     const statusDot = document.getElementById('status-dot-main');
     const statusText = document.getElementById('server-online-text');
